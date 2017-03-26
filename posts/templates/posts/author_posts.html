@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>The Posts of {{the_author.username}}</h1>
+<br>
+<br>
+
+{% for post in postim.all %}
+
+
+<div class="row">
+
+
+<!-- this part is the arrows and counts -->
+<div class="col-sm-1" align="center">
+
+  <a href="#" onClick="document.getElementById('arrowup{{ post.id }}').submit();"><span class="glyphicon glyphicon-triangle-top" aria-hidden="true"></span></a>
+
+  <form id="arrowup{{ post.id }}" method="POST" action="{% url 'posts:upvote' post.id %}">
+    {% csrf_token %}
+    <input type="hidden" name="click" />
+  </form>
+
+  <h4><strong>{{post.votes_total}}</strong></h4>
+
+  <a href="#" onClick="document.getElementById('arrowbottom{{ post.id }}').submit();"><span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span></a>
+  <form id="arrowbottom{{post.id}}" method="POST" action=" {% url 'posts:downvote' post.id %}">
+    {% csrf_token %}
+    <input type="hidden"/>
+  </form>
+</div>
+
+<!-- this part is the arrows and counts -->
+<div class="col-sm-4">
+  <a href="{{ post.url }}" ><h3>{{post.title}} </h3></a>
+  created at: {{post.pub_date_pretty}}, by {{post.author.username}}
+  <hr>
+</div>
+</div>
+
+
+{% endfor %}
+
+
+{% endblock%}
